@@ -1,18 +1,233 @@
 <!doctype html>
-  <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Evidence-Grounded EHR Population</title>
-  </head>
-  <body>
-    <h1>Validation-Guided Selective Adaptation and Evidence-Grounded Verification</h1>
-    <p>
-      A research pipeline for automated population of structured EHR fields
-      from clinical notes.
-    </p>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta
+    name="description"
+    content="Master's thesis project on validation-guided adaptation and evidence-grounded verification for structured EHR field population."
+  >
+  <title>Evidence-Grounded EHR Population | Master's Thesis</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="wordmark" href="#top" aria-label="Go to the top of the page">
+      <span class="wordmark-code">EHR / 26</span>
+      <span>Master's Thesis Project</span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#question">Research Question</a>
+      <a href="#system">System</a>
+      <a href="#status">Status</a>
+    </nav>
+    <span class="institution">Pusan National University</span>
+  </header>
 
-    <h2>Project Status</h2>
-    <p>Manuscript in preparation.</p>
-  </body>
-  </html>
+  <main id="top">
+    <section class="title-spread">
+      <div class="title-copy">
+        <div class="title-index" aria-hidden="true">01</div>
+        <p class="kicker">Clinical NLP · Structured Data · Evidence Verification</p>
+        <h1>
+          Validation-Guided Selective Adaptation and Evidence-Grounded
+          Verification for Automated Population of Structured EHR Fields
+          from Clinical Notes
+        </h1>
+        <p class="lead">
+          A field-aware pipeline that focuses adaptation where baseline
+          extraction is weak and checks uncertain predictions against the
+          patient's own clinical record.
+        </p>
+        <div class="byline">
+          <span><b>Researcher</b> Jaeyeon Kim</span>
+          <span><b>Degree</b> Master's Thesis</span>
+          <span><b>Stage</b> Manuscript in Preparation</span>
+        </div>
+      </div>
+
+      <figure class="field-map" aria-labelledby="field-map-title">
+        <figcaption id="field-map-title">
+          <span>Field-level processing map</span>
+          <small>Illustrative system view</small>
+        </figcaption>
+        <div class="map-key" aria-label="Map legend">
+          <span><i class="key-base"></i>Baseline</span>
+          <span><i class="key-adapt"></i>Adapt</span>
+          <span><i class="key-verify"></i>Verify</span>
+        </div>
+        <div class="matrix" aria-label="Illustration of field-specific processing">
+          <div class="matrix-head">Field family</div>
+          <div class="matrix-head">Base</div>
+          <div class="matrix-head">Adapt</div>
+          <div class="matrix-head">Verify</div>
+
+          <div class="matrix-label">History</div><div class="cell base"></div><div class="cell adapt"></div><div class="cell verify"></div>
+          <div class="matrix-label">Vitals</div><div class="cell base"></div><div class="cell adapt"></div><div class="cell quiet"></div>
+          <div class="matrix-label">Etiology</div><div class="cell base"></div><div class="cell adapt"></div><div class="cell verify"></div>
+          <div class="matrix-label">Tests</div><div class="cell base"></div><div class="cell quiet"></div><div class="cell verify"></div>
+          <div class="matrix-label">Context</div><div class="cell base"></div><div class="cell quiet"></div><div class="cell quiet"></div>
+        </div>
+        <p class="figure-note">
+          The pipeline does not treat every field identically. Development
+          data determine where additional adaptation or verification is used.
+        </p>
+      </figure>
+    </section>
+
+    <section class="question-section" id="question">
+      <div class="section-marker">
+        <span>02</span>
+        <p>Research Question</p>
+      </div>
+      <div class="question-copy">
+        <h2>
+          How can heterogeneous clinical narratives be converted into
+          structured EHR fields without applying the same correction strategy
+          everywhere?
+        </h2>
+      </div>
+      <div class="question-notes">
+        <div>
+          <span class="note-label">Problem</span>
+          <p>
+            EHR fields differ in definition, label space, frequency, and
+            extraction difficulty. Uniform regeneration can alter predictions
+            that were already stable.
+          </p>
+        </div>
+        <div>
+          <span class="note-label">Response</span>
+          <p>
+            Measure field-level behavior, adapt selected targets, and use
+            patient-specific evidence to verify the values that remain
+            uncertain.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="system-section" id="system">
+      <header class="section-header">
+        <div class="section-marker light-marker">
+          <span>03</span>
+          <p>System</p>
+        </div>
+        <div>
+          <p class="section-caption">Proposed processing path</p>
+          <h2>One baseline, two targeted refinement paths</h2>
+        </div>
+      </header>
+
+      <div class="route" aria-label="Proposed pipeline">
+        <div class="route-node input-node">
+          <span class="route-code">INPUT</span>
+          <strong>Clinical Notes</strong>
+          <small>Admission and progress records</small>
+        </div>
+
+        <div class="route-link" aria-hidden="true"><span></span></div>
+
+        <div class="route-node baseline-node">
+          <span class="route-code">BASE</span>
+          <strong>Hybrid Prediction</strong>
+          <small>Codebook-guided structured output</small>
+        </div>
+
+        <div class="route-link gate-link" aria-hidden="true"><span></span></div>
+
+        <div class="route-node gate-node">
+          <span class="route-code">GATE</span>
+          <strong>Validation-Guided Selection</strong>
+          <small>Field-level vulnerability analysis</small>
+        </div>
+
+        <div class="route-branches">
+          <div class="branch branch-adapt">
+            <span class="branch-label">Correction path</span>
+            <strong>Selective LoRA</strong>
+            <small>Adapt and merge selected fields</small>
+          </div>
+          <div class="branch branch-verify">
+            <span class="branch-label">Evidence path</span>
+            <strong>Clinical Verification</strong>
+            <small>Retrieve evidence and judge each candidate</small>
+          </div>
+        </div>
+
+        <div class="route-link final-link" aria-hidden="true"><span></span></div>
+
+        <div class="route-node output-node">
+          <span class="route-code">OUTPUT</span>
+          <strong>Structured EHR</strong>
+          <small>Field-level final values</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="principles-section">
+      <div class="section-marker">
+        <span>04</span>
+        <p>Design Principles</p>
+      </div>
+      <div class="principle-list">
+        <article>
+          <span class="principle-number">A</span>
+          <div>
+            <h3>Measure Before Adapting</h3>
+            <p>
+              Field-level development metrics identify where additional
+              modeling effort is justified.
+            </p>
+          </div>
+        </article>
+        <article>
+          <span class="principle-number">B</span>
+          <div>
+            <h3>Preserve Stable Predictions</h3>
+            <p>
+              Baseline and adapted outputs are combined with policies selected
+              on validation data rather than replacing every field uniformly.
+            </p>
+          </div>
+        </article>
+        <article>
+          <span class="principle-number">C</span>
+          <div>
+            <h3>Return to the Record</h3>
+            <p>
+              Verification uses retrieved clinical evidence, field
+              descriptions, and allowed values before revising a prediction.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="status-section" id="status">
+      <div class="status-stamp">
+        <span>05 / STATUS</span>
+        <strong>IN PROGRESS</strong>
+      </div>
+      <div class="status-main">
+        <h2>Manuscript in Preparation</h2>
+        <p>
+          The pipeline has been implemented and is undergoing internal review.
+          Detailed methods, aggregate evaluation results, and publication
+          resources will be added after institutional review.
+        </p>
+      </div>
+      <ul class="release-list" aria-label="Planned page updates">
+        <li><span>01</span>Method details</li>
+        <li><span>02</span>Aggregate results</li>
+        <li><span>03</span>Paper and code</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 Jaeyeon Kim · Pusan National University</span>
+    <span>Public project summary · No patient-level data</span>
+  </footer>
+</body>
+</html>
