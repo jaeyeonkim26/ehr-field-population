@@ -1,0 +1,14 @@
+# Keep private research artifacts out of this public project-page repository.
+*.xlsx
+*.xls
+*.csv
+*.jsonl
+*.pt
+*.pth
+*.safetensors
+*.ckpt
+*.env
+__pycache__/
+outputs/
+data/
+original_data/
